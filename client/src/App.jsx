@@ -8,7 +8,8 @@ class App extends Component {
     super(props);
     this.socket = new WebSocket("ws://localhost:4000");
     this.handleChatBar = this.handleChatBar.bind(this);
-    this.postMessage = this.postMessage.bind(this);
+    this.postChatData = this.postChatData.bind(this);
+    this.handleSocketMessage = this.handleSocketMessage.bind(this);
     this.state = { data : {
         currentUser : {},
         messages : [],
@@ -16,8 +17,15 @@ class App extends Component {
     }
   }
 
-  postMessage (messageData) {
+  handleSocketMessage(message) {
+    switch (message.type) {
+      case "message":
+        this.postChatData(message);
+        break;
+    }
+  }
 
+  postChatData (messageData) {
     const messageArray = this.state.data.messages;
     messageArray.push({
       username: messageData.data.username,
@@ -31,6 +39,7 @@ class App extends Component {
     console.log(messageData);
   }
 
+
   componentWillMount() {
     console.log("app will mount")
   }
@@ -40,7 +49,8 @@ class App extends Component {
       console.log("connected to server");
     }
     this.socket.onmessage = (message) => {
-      this.postMessage(JSON.parse(message.data));
+      var message = JSON.parse(message.data);
+      this.handleSocketMessage(message);
     }
   }
 

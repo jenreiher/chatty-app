@@ -17,7 +17,7 @@ class MessageList extends Component {
 }
 export default MessageList;
 
-     // <div className="message system">
+//better way of renderig this
 
-     //      Anonymous1 changed their name to nomnom.
-     //    </div>
+//should not need to rerender the whole entire array...
+//instead if we could find a way to append a dom node of <Message>
