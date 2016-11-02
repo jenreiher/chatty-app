@@ -1,0 +1,28 @@
+h1 {
+  color: black;
+}
+html, body { max-height: 100vh; max-width: 100vw; font-family: 'Josefin Sans', sans-serif;}
+.wrapper { font-size: 14px; }
+nav { height: 40px;padding: 3px; border-bottom: 1px solid black; }
+nav h1 { font-size: 2em; margin: 0; }
+#message-list { height: calc(100vh - 90px); padding: 16px 8px; background-color: #c6c5c5;}
+#message-list .message .username,#message-list .message .content {
+  display: inline-block; padding: 4px 0;
+}
+#message-list .message .username {  margin-right: 16px; overflow: hidden; font-weight: 700;}
+#message-list .message .content {  flex: 85; }
+#message-list .message.system { font-weight: 400; font-style: italic; }
+footer {
+  height: 41px;
+  border-top: 1px solid black;
+  background-color: tomato;
+  display: flex; align-items: center;
+}
+footer input {
+  border: 1px solid black;
+  margin: 4px;
+  height: 20px;
+  padding: 4px 8px;
+}
+footer #username { flex: 3; }
+footer #new-message { flex: 7; }
