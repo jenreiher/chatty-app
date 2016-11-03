@@ -7,7 +7,7 @@ class ChatBar extends Component {
       username : "",
       "content" : "",
       "colourMenu": "",
-      "colour" : ""
+      "colour" : "black"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
@@ -37,7 +37,7 @@ class ChatBar extends Component {
       this.props.onEnter({
         username: this.state.username,
         content: this.state.content,
-        colour: this.state.color
+        colour: this.state.colour
       });
       //clear input field
       this.setState({content: ""})
@@ -51,6 +51,7 @@ class ChatBar extends Component {
         break;
       case "colour-block":
         this.setState({"colour" : event.target.dataset.colour});
+        this.props.showColourMenu(this.state.colourMenu);
         console.log("it worked")
         break;
     }

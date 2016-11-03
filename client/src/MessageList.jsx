@@ -2,12 +2,19 @@ import React,  {Component} from 'react';
 import Message from './Message.jsx';
 
 class MessageList extends Component {
+  constructor() {
+    super();
+    this.messageid = 0;
+  }
   render() {
     console.log("rendered messagelist");
     return (
       <div id="message-list">
 
         {this.props.messageData.map((message) => {
+          //increment a message id to keep track of specific messages for styling
+            message.messageid = this.messageid;
+            this.messageid++;
             return <Message key={message.id} MessageObj={message} />;
           })
         }

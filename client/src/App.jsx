@@ -46,14 +46,13 @@ class App extends Component {
       id: messageData.data.id,
       className: messageData.data.className,
       colour: messageData.data.colour});
-
     return messageArray;
   }
 
 
 
   postChatData (messageData) {
-    var messageArray = this.generateMessageArray(messageData);
+    const messageArray = this.generateMessageArray(messageData);
     this.setState({ messages : messageArray });
   }
 
@@ -71,7 +70,6 @@ class App extends Component {
        oldName: this.state.currentUser.name,
        newName: newName
     }
-    console.log(notificationObject, "this is notificationObject")
     this.socket.send(JSON.stringify(notificationObject));
   }
 
@@ -84,7 +82,7 @@ class App extends Component {
       console.log("connected to server");
     }
     this.socket.onmessage = (message) => {
-      var message = JSON.parse(message.data);
+      message = JSON.parse(message.data);
       this.handleSocketMessage(message);
     }
   }
@@ -96,7 +94,8 @@ class App extends Component {
         messageObject.username = "Anonymous";
       }
       this.setState({currentUser: { name: messageObject.username}});
-      messageObject.type = "post-message"
+      messageObject.type = "post-message";
+      console.log(messageObject, "this is the message object")
       this.sendChatData(messageObject);
 
   }
