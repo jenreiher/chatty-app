@@ -8,37 +8,66 @@ class App extends Component {
     super(props);
     this.socket = new WebSocket("ws://localhost:4000");
     this.handleChatBar = this.handleChatBar.bind(this);
+    this.sendChatData = this.sendChatData.bind(this);
     this.postChatData = this.postChatData.bind(this);
+    this.sendNotification = this.sendNotification.bind(this);
+    this.postNotification = this.postNotification.bind(this);
+    this.generateMessageArray = this.generateMessageArray.bind(this);
     this.handleSocketMessage = this.handleSocketMessage.bind(this);
-    this.state = { data : {
-        currentUser : {},
+    this.state = {
+        currentUser : {name: ""},
         messages : [],
-      }
+
     }
   }
 
   handleSocketMessage(message) {
     switch (message.type) {
-      case "message":
+      case "incoming-message":
         this.postChatData(message);
+        break;
+      case "incoming-notification":
+        this.postNotification(message);
         break;
     }
   }
 
-  postChatData (messageData) {
-    const messageArray = this.state.data.messages;
+  generateMessageArray(messageData) {
+    const messageArray = this.state.messages;
     messageArray.push({
       username: messageData.data.username,
       content: messageData.data.content,
-      id: messageData.data.id});
+      id: messageData.data.id,
+      className: messageData.data.className});
 
-    this.setState( {data : {
-      currentUser : messageData.data.username,
-      messages : messageArray
-    }});
-    console.log(messageData);
+    return messageArray;
   }
 
+
+
+  postChatData (messageData) {
+    var messageArray = this.generateMessageArray(messageData);
+    this.setState({ messages : messageArray });
+  }
+
+  sendChatData (chatData) {
+    console.log(chatData, "chatData")
+    this.socket.send(JSON.stringify(chatData));
+  }
+
+  postNotification (messageData) {
+    this.postChatData(messageData);
+  }
+
+  sendNotification (newName) {
+    const notificationObject = {
+       type: "post-nameChange",
+       oldName: this.state.currentUser.name,
+       newName: newName
+    }
+    this.socket.send(JSON.stringify(notificationObject));
+    console.log("notificationObject", notificationObject)
+  }
 
   componentWillMount() {
     console.log("app will mount")
@@ -55,12 +84,15 @@ class App extends Component {
   }
 
 
-
   handleChatBar (messageObject) {
-    if (!messageObject.username) {
-      messageObject.username = "Anonymous";
-    }
-    this.socket.send(JSON.stringify(messageObject));
+    //if no username field was entered
+      if(!messageObject.username.length) {
+        messageObject.username = "Anonymous";
+        this.setState({currentUser: { name: messageObject.username}});
+      }
+      messageObject.type = "post-message"
+      this.sendChatData(messageObject);
+
   }
 
   render() {
@@ -71,9 +103,9 @@ class App extends Component {
           <h1>Chatty</h1>
         </nav>
 
-          <MessageList messageData={this.state.data.messages}></MessageList>
+        <MessageList messageData={this.state.messages} postNotification={this.postNotification} ></MessageList>
+        <Chatbar currentUser={this.state.currentUser.name} onEnter={this.handleChatBar} setName={this.setName} sendNotification={this.sendNotification} ></Chatbar>
 
-        <Chatbar currentUser={this.state.data.currentUser.name} onEnter={this.handleChatBar}></Chatbar>
       </div>
     );
   }

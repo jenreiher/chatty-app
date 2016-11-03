@@ -19,9 +19,20 @@ class ChatBar extends Component {
       this.setState({content: event.target.value});
     }
   }
+
   handleEnter (event) {
-    if(event.keyCode === 13) {
+    var content = this.state.content.trim();
+    var username = this.state.username.trim();
+
+    //on enter key and  if message content is not empty
+    if(event.keyCode === 13 && content.length > 0) {
+      //check for name change
+      if(this.state.username !== this.props.currentUser) {
+        this.props.sendNotification(this.state.username);
+      }
+      //sends state to Parent to be sent to ws server
       this.props.onEnter(this.state);
+      //clear input field
       this.setState({content: ""})
     }
   }
@@ -29,11 +40,29 @@ class ChatBar extends Component {
     console.log("rendered chatbar");
     return (
       <footer>
-        <input className="form-control" id="username" type="text" placeholder="Your Name (Optional)" value={this.state.username} onChange={this.handleChange} onKeyUp={this.handleEnter} />
-        <input className="form-control" id="new-message" type="text" placeholder="Type a message and hit ENTER" value={this.state.content} onChange={this.handleChange} onKeyUp={this.handleEnter} />
+        <input className="form-control"
+          id="username"
+          type="text"
+          placeholder="Your Name (Optional)"
+          value={this.state.username}
+          onChange={this.handleChange}
+          onKeyUp={this.handleEnter} />
+
+        <input className="form-control"
+          id="new-message"
+          type="text"
+          placeholder="Type a message and hit ENTER"
+          value={this.state.content}
+          onChange={this.handleChange}
+          onKeyUp={this.handleEnter} />
+
+
+        <span className="textcolour-menu">Colour</span>
       </footer>
     );
   }
 }
 
 export default ChatBar;
+
+//pick a color

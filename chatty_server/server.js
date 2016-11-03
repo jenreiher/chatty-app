@@ -15,6 +15,19 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+class MessageSystem {
+
+  static notifyNameChange(names) {
+
+    console.log(names, "THese are the names")
+      return {username: "Message-System",
+              content: `${names.oldName} changed name too ${names.newName}`,
+              id: makeUID(),
+              className: "system"};
+  }
+
+}
+
 //broadcast data object to each client
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
@@ -26,10 +39,6 @@ function makeUID() {
   return uuid.v1();
 }
 
-//send string of name change
-function notifyNameChange(names) {
-  return `${names.oldName} changed name too ${names.newName}`;
-}
 //send a broadcast of varying type and data
 function sendBroadcast(type, dataObj) {
   wss.broadcast({
@@ -51,15 +60,16 @@ wss.on('connection', (ws) => {
         sendBroadcast("incoming-message", {
             id: makeUID(),
             username: data.username,
-            content: data.content
+            content: data.content,
+            className: "user"
           });
         break;
       case "post-nameChange":
-        sendBroadcast("incoming-notification", notifyNameChange(data))
+        sendBroadcast("incoming-notification", MessageSystem.notifyNameChange(data))
         break;
-      break;
     }
   })
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
 });
+
