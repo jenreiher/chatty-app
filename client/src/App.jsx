@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Chatbar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
+import Nav from './Nav.jsx'
 
 class App extends Component {
   //set initial state with constructor**
@@ -17,6 +18,7 @@ class App extends Component {
     this.state = {
         currentUser : {name: ""},
         messages : [],
+        userCount: 0
 
     }
   }
@@ -28,6 +30,9 @@ class App extends Component {
         break;
       case "incoming-notification":
         this.postNotification(message);
+        break;
+      case "incoming-userCount":
+        this.setState({userCount: message.data});
         break;
     }
   }
@@ -51,7 +56,6 @@ class App extends Component {
   }
 
   sendChatData (chatData) {
-    console.log(chatData, "chatData")
     this.socket.send(JSON.stringify(chatData));
   }
 
@@ -66,7 +70,6 @@ class App extends Component {
        newName: newName
     }
     this.socket.send(JSON.stringify(notificationObject));
-    console.log("notificationObject", notificationObject)
   }
 
   componentWillMount() {
@@ -99,10 +102,8 @@ class App extends Component {
 
     return (
       <div className="wrapper">
-        <nav>
-          <h1>Chatty</h1>
-        </nav>
 
+        <Nav userCount={this.state.userCount} />
         <MessageList messageData={this.state.messages} postNotification={this.postNotification} ></MessageList>
         <Chatbar currentUser={this.state.currentUser.name} onEnter={this.handleChatBar} setName={this.setName} sendNotification={this.sendNotification} ></Chatbar>
 

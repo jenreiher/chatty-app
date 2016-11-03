@@ -22,8 +22,9 @@ h1 {
   color: black;
 }
 html, body { max-height: 100vh; max-width: 100vw; font-family: 'Josefin Sans', sans-serif;}
-nav { height: 40px;padding: 3px; border-bottom: 1px solid black; }
-nav h1 { font-size: 2em; margin: 0; }
+nav { height: 40px;padding: 3px 12px; border-bottom: 1px solid black; }
+nav h1 { font-size: 2em; margin: 0; width:25%; float:left; }
+nav h4 {float: right; color: gray}
 footer {
   height: 41px;
   border-top: 1px solid black;
