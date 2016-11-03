@@ -71,6 +71,7 @@ class App extends Component {
        oldName: this.state.currentUser.name,
        newName: newName
     }
+    console.log(notificationObject, "this is notificationObject")
     this.socket.send(JSON.stringify(notificationObject));
   }
 
@@ -91,10 +92,10 @@ class App extends Component {
 
   handleChatBar (messageObject) {
     //if no username field was entered
-      if(!messageObject.username.length) {
+      if(!messageObject.username) {
         messageObject.username = "Anonymous";
-        this.setState({currentUser: { name: messageObject.username}});
       }
+      this.setState({currentUser: { name: messageObject.username}});
       messageObject.type = "post-message"
       this.sendChatData(messageObject);
 

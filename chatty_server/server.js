@@ -75,7 +75,8 @@ wss.on('connection', (ws) => {
             id: makeUID(),
             username: data.username,
             content: data.content,
-            className: "user"
+            className: "user",
+            colour: data.colour
           });
         break;
       case "post-nameChange":

@@ -7,7 +7,7 @@ class ChatBar extends Component {
       username : "",
       "content" : "",
       "colourMenu": "",
-      "color" : ""
+      "colour" : ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
@@ -30,14 +30,14 @@ class ChatBar extends Component {
     //on enter key and  if message content is not empty
     if(event.keyCode === 13 && content.length > 0) {
       //check for name change
-      if(this.state.username !== this.props.currentUser) {
+      if(username !== this.props.currentUser) {
         this.props.sendNotification(this.state.username);
       }
       //sends state to Parent to be sent to ws server
       this.props.onEnter({
         username: this.state.username,
         content: this.state.content,
-        color: this.state.color
+        colour: this.state.color
       });
       //clear input field
       this.setState({content: ""})
@@ -50,6 +50,7 @@ class ChatBar extends Component {
         this.props.showColourMenu(this.state.colourMenu);
         break;
       case "colour-block":
+        this.setState({"colour" : event.target.dataset.colour});
         console.log("it worked")
         break;
     }
