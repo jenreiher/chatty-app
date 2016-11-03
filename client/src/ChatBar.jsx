@@ -5,10 +5,13 @@ class ChatBar extends Component {
     super(props)
     this.state = {
       username : "",
-      "content" : ""
+      "content" : "",
+      "colourMenu": "",
+      "color" : ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
+    this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
   handleChange (event) {
@@ -21,8 +24,8 @@ class ChatBar extends Component {
   }
 
   handleEnter (event) {
-    var content = this.state.content.trim();
-    var username = this.state.username.trim();
+    let content = this.state.content.trim();
+    let username = this.state.username.trim();
 
     //on enter key and  if message content is not empty
     if(event.keyCode === 13 && content.length > 0) {
@@ -31,10 +34,29 @@ class ChatBar extends Component {
         this.props.sendNotification(this.state.username);
       }
       //sends state to Parent to be sent to ws server
-      this.props.onEnter(this.state);
+      this.props.onEnter({
+        username: this.state.username,
+        content: this.state.content,
+        color: this.state.color
+      });
       //clear input field
       this.setState({content: ""})
     }
+  }
+  handleMenuClick(event) {
+    event.stopPropagation();
+    switch (event.target.className) {
+      case "textcolour-menu btn-group":
+        this.props.showColourMenu(this.state.colourMenu);
+        break;
+      case "colour-block":
+        console.log("it worked")
+        break;
+    }
+   }
+
+  componentDidMount() {
+    this.setState( {colourMenu: document.querySelector(".colour-grid")});
   }
   render() {
     console.log("rendered chatbar");
@@ -57,7 +79,25 @@ class ChatBar extends Component {
           onKeyUp={this.handleEnter} />
 
 
-        <span className="textcolour-menu">Colour</span>
+        <span className="textcolour-menu btn-group" onClick={this.handleMenuClick}>Colour</span>
+          <div className="colour-grid" ref={document.querySelector(".colour-grid")}>
+            <div className="colour-row">
+              <div className="colour-block" id="colour1" onClick={this.handleMenuClick} data-colour="#5853b2"></div>
+              <div className="colour-block" id="colour2" onClick={this.handleMenuClick} data-colour="#ad67d3"></div>
+              <div className="colour-block" id="colour3" onClick={this.handleMenuClick} data-colour="#d367bc"></div>
+            </div>
+            <div className="colour-row">
+              <div className="colour-block" id="colour4" onClick={this.handleMenuClick} data-colour="#bc2323"></div>
+              <div className="colour-block" id="colour5" onClick={this.handleMenuClick} data-colour="#23b7bc"></div>
+              <div className="colour-block" id="colour6" onClick={this.handleMenuClick} data-colour="#23bc5b"></div>
+            </div>
+             <div className="colour-row">
+              <div className="colour-block" id="colour7" onClick={this.handleMenuClick} data-colour="#727554"></div>
+              <div className="colour-block" id="colour8" onClick={this.handleMenuClick} data-colour="#af6c28"></div>
+              <div className="colour-block" id="colour9" onClick={this.handleMenuClick} data-colour=" black"></div>
+            </div>
+
+        </div>
       </footer>
     );
   }

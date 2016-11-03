@@ -15,6 +15,7 @@ class App extends Component {
     this.postNotification = this.postNotification.bind(this);
     this.generateMessageArray = this.generateMessageArray.bind(this);
     this.handleSocketMessage = this.handleSocketMessage.bind(this);
+    this.showColourMenu = this.showColourMenu.bind(this);
     this.state = {
         currentUser : {name: ""},
         messages : [],
@@ -43,7 +44,8 @@ class App extends Component {
       username: messageData.data.username,
       content: messageData.data.content,
       id: messageData.data.id,
-      className: messageData.data.className});
+      className: messageData.data.className,
+      colour: messageData.data.colour});
 
     return messageArray;
   }
@@ -97,7 +99,14 @@ class App extends Component {
       this.sendChatData(messageObject);
 
   }
+  showColourMenu (colourMenu) {
+    if(colourMenu.style.display === "") {
+      colourMenu.style.display = "block";
+    } else if (colourMenu.style.display === "block") {
+        colourMenu.style.display = "";
+    }
 
+  }
   render() {
 
     return (
@@ -105,7 +114,12 @@ class App extends Component {
 
         <Nav userCount={this.state.userCount} />
         <MessageList messageData={this.state.messages} postNotification={this.postNotification} ></MessageList>
-        <Chatbar currentUser={this.state.currentUser.name} onEnter={this.handleChatBar} setName={this.setName} sendNotification={this.sendNotification} ></Chatbar>
+        <Chatbar
+          currentUser={this.state.currentUser.name}
+          onEnter={this.handleChatBar}
+          setName={this.setName}
+          sendNotification={this.sendNotification}
+          showColourMenu={this.showColourMenu} ></Chatbar>
 
       </div>
     );

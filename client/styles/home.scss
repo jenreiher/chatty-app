@@ -10,6 +10,9 @@
 .textcolour-menu {
   margin: 0px 5px;
 }
+.textcolour-menu:hover {
+  color: white;
+}
 .wrapper { font-size: 14px; }
 .system {
   font-size: .8em;
@@ -29,6 +32,7 @@ nav h4 {float: right; color: gray}
 footer {
   height: 41px;
   border-top: 1px solid black;
+  position: relative;
   background-color: tomato;
   display: flex; align-items: center;
 }
@@ -37,4 +41,63 @@ footer input {
   margin: 4px;
   height: 20px;
   padding: 4px 8px;
+}
+
+.colour-grid {
+  display: none;
+      height: 100px;
+    width: 100px;
+    position: absolute;
+    background: white;
+    z-index: 2;
+    right: 0;
+    bottom: 100%;
+}
+.colour-block {
+  height: 100%;
+  display: inline-block;
+  opacity: .8;
+  width: 33.33333%;
+}
+.colour-block:hover {
+  opacity: 1;
+}
+.colour-row {
+  height: 33.33333%;
+  width: 100%;
+}
+#colour1 {
+  background: #5853b2;
+
+}
+#colour2 {
+  background: #ad67d3;
+
+}
+#colour3 {
+
+  background: #d367bc;
+}
+#colour4 {
+
+  background: #bc2323;
+}
+#colour5 {
+
+  background: #23b7bc;
+}
+#colour6 {
+
+  background: #23bc5b;
+}
+#colour7 {
+
+  background: #727554;
+}
+#colour8 {
+
+  background: #af6c28;
+}
+#colour9 {
+  background: black;
 }
