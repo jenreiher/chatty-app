@@ -29,6 +29,10 @@ class ChatBar extends Component {
 
     //on enter key and  if message content is not empty
     if(event.keyCode === 13 && content.length > 0) {
+      //if name is empty
+      if(!username) {
+        this.setState({username: "Anonymous"});
+      }
       //check for name change
       if(username !== this.props.currentUser) {
         this.props.sendNotification(this.state.username);
