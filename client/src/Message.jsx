@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 
 class Message extends Component {
+
   componentDidMount() {
     //set colour of specific messages by their id
     let username = document.getElementById(this.props.MessageObj.messageid);
     username.style.color = this.props.MessageObj.colour;
   }
+
   render() {
 
     console.log("rendered message");

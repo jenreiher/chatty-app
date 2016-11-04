@@ -14,6 +14,10 @@ class ChatBar extends Component {
     this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
+  componentDidMount() {
+    this.setState( {colourMenu: document.querySelector(".colour-grid")});
+  }
+
   handleChange (event) {
     const id = event.target.id;
     if(id === "username") {
@@ -47,6 +51,7 @@ class ChatBar extends Component {
       this.setState({content: ""})
     }
   }
+
   handleMenuClick(event) {
     event.stopPropagation();
     switch (event.target.className) {
@@ -61,9 +66,6 @@ class ChatBar extends Component {
     }
    }
 
-  componentDidMount() {
-    this.setState( {colourMenu: document.querySelector(".colour-grid")});
-  }
   render() {
     console.log("rendered chatbar");
     return (
@@ -110,5 +112,3 @@ class ChatBar extends Component {
 }
 
 export default ChatBar;
-
-//pick a color

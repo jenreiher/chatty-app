@@ -20,57 +20,7 @@ class App extends Component {
         currentUser : {name: ""},
         messages : [],
         userCount: 0
-
     }
-  }
-
-  handleSocketMessage(message) {
-    switch (message.type) {
-      case "incoming-message":
-        this.postChatData(message);
-        break;
-      case "incoming-notification":
-        this.postNotification(message);
-        break;
-      case "incoming-userCount":
-        this.setState({userCount: message.data});
-        break;
-    }
-  }
-
-  generateMessageArray(messageData) {
-    const messageArray = this.state.messages;
-    messageArray.push({
-      username: messageData.data.username,
-      content: messageData.data.content,
-      id: messageData.data.id,
-      className: messageData.data.className,
-      colour: messageData.data.colour});
-    return messageArray;
-  }
-
-
-
-  postChatData (messageData) {
-    const messageArray = this.generateMessageArray(messageData);
-    this.setState({ messages : messageArray });
-  }
-
-  sendChatData (chatData) {
-    this.socket.send(JSON.stringify(chatData));
-  }
-
-  postNotification (messageData) {
-    this.postChatData(messageData);
-  }
-
-  sendNotification (newName) {
-    const notificationObject = {
-       type: "post-nameChange",
-       oldName: this.state.currentUser.name,
-       newName: newName
-    }
-    this.socket.send(JSON.stringify(notificationObject));
   }
 
   componentWillMount() {
@@ -87,6 +37,52 @@ class App extends Component {
     }
   }
 
+  generateMessageArray(messageData) {
+    const messageArray = this.state.messages;
+    messageArray.push({
+      username: messageData.data.username,
+      content: messageData.data.content,
+      id: messageData.data.id,
+      className: messageData.data.className,
+      colour: messageData.data.colour});
+    return messageArray;
+  }
+
+  handleSocketMessage(message) {
+    switch (message.type) {
+      case "incoming-message":
+        this.postChatData(message);
+        break;
+      case "incoming-notification":
+        this.postNotification(message);
+        break;
+      case "incoming-userCount":
+        this.setState({userCount: message.data});
+        break;
+    }
+  }
+
+  postChatData (messageData) {
+    const messageArray = this.generateMessageArray(messageData);
+    this.setState({ messages : messageArray });
+  }
+
+  postNotification (messageData) {
+    this.postChatData(messageData);
+  }
+
+  sendChatData (chatData) {
+    this.socket.send(JSON.stringify(chatData));
+  }
+
+  sendNotification (newName) {
+    const notificationObject = {
+       type: "post-nameChange",
+       oldName: this.state.currentUser.name,
+       newName: newName
+    }
+    this.socket.send(JSON.stringify(notificationObject));
+  }
 
   handleChatBar (messageObject) {
     //if no username field was entered
@@ -97,16 +93,16 @@ class App extends Component {
       messageObject.type = "post-message";
       console.log(messageObject, "this is the message object")
       this.sendChatData(messageObject);
-
   }
+
   showColourMenu (colourMenu) {
     if(colourMenu.style.display === "") {
       colourMenu.style.display = "block";
     } else if (colourMenu.style.display === "block") {
         colourMenu.style.display = "";
     }
-
   }
+
   render() {
 
     return (
@@ -119,8 +115,8 @@ class App extends Component {
           onEnter={this.handleChatBar}
           setName={this.setName}
           sendNotification={this.sendNotification}
-          showColourMenu={this.showColourMenu} ></Chatbar>
-
+          showColourMenu={this.showColourMenu} >
+        </Chatbar>
       </div>
     );
   }
